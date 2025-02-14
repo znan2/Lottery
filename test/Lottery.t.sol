@@ -20,21 +20,25 @@ contract LotteryTest is Test {
         lottery.buy{value: 0.1 ether}(0);
     }
 
+    //송금을 하지 않고 티켓을 살 수 있는지 확인
     function testInsufficientFunds1() public {
         vm.expectRevert();
         lottery.buy(0);
     }
 
+    //0.1이더보다 1wei 적게 송금하면 티켓을 살 수 없는지 확인
     function testInsufficientFunds2() public {
         vm.expectRevert();
         lottery.buy{value: 0.1 ether - 1}(0);
     }
 
+    //0.1이더보다 1wei 많이 송금하면 티켓을 살 수 없는지 확인, 금액이 초과되면 구매가 실패해야 하는 듯
     function testInsufficientFunds3() public {
         vm.expectRevert();
         lottery.buy{value: 0.1 ether + 1}(0);
     }
 
+    //중복 구매 방지
     function testNoDuplicate() public {
         lottery.buy{value: 0.1 ether}(0);
         vm.expectRevert();
